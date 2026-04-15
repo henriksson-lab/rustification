@@ -31,7 +31,7 @@ But:
 * **Check the original Github pages for information about the package**. This README is kept sparse on purpose. It is not meant to be the primary source of information
 * **If you are the author of the original code and wish to move to Rust, you can obtain ownership of this repository and crate**. Until then, our commitment is to offer an as-faithful-as-possible translation of a snapshot of your code. If we find serious bugs, we will report them to you. Otherwise we will just replicate them, to ensure comparability across studies that claim to use package XYZ v.666. Think of this like a fancy Ubuntu .deb-package of your software - that is how we treat it
 
-This blurb might be out of date. Go to [this page]() for the latest information and further information about how we approach translation
+This blurb might be out of date. Go to [this page](https://github.com/henriksson-lab/rustification) for the latest information and further information about how we approach translation
 
 
 
@@ -44,7 +44,7 @@ This blurb might be out of date. Go to [this page]() for the latest information 
 We will release information about our process once we think it produces good output. Other people may otherwise blindly follow the instructions and fill the internet with poor translations.
 But in short, we use Claude and Codex along with software that helps validate the quality.
 
-One particularly useful software is [tracehash](https://github.com/henriksson-lab/tracehash), which helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility.
+One particularly useful software is our [tracehash](https://github.com/henriksson-lab/tracehash), which helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility.
 You can point your LLM to it and it will figure out how to use it
 
 

@@ -52,16 +52,64 @@ You can point your LLM to it and it will figure out how to use it
 
 
 **Why not just write new software instead of translating?**
+
 1. We could just ask our LLM to write the software we need but it would then just go out and copy it from somewhere, without us knowing the origin. This means unclear copyright, and nobody gets attributed for their contribution
 2. Maintaining a competing software is more work, adds code to maintain, and steals citations. It's a lose-lose scenario
 3. Written software has been tested, and LLMs tend to produce rather shoddy software. It still cannot compete with hand-crafted code from an engineer. By translating, we can compare our software to a reference to ensure correctness
 
 **Why use LLMs to translate?**
+
 Software like [c2rust](https://github.com/immunant/c2rust) can convert C to Rust 100% faithfully, but at a serious cost: It doesn't look like Rust at all! This causes several problems:
 1. Heavy use of "unsafe" means that the memory safety guarantees of Rust are disabled
 2. The Rust compiler will not recognize the code. It is designed for "code that looks like Rust", and if it does not, the generated binary will be slower than otherwise
 3. Ideally we want to promote Rust as the future language of bioinformatics! And to smoothen the transition, we ideally offer code that is as similar to the original as possible, to provide familiarity with its structure. LLMs are needed for idiomatic rewrites
 
 That said, we are looking into ways of reducing LLM usage, as an algorithm can be proven to generate faithful results, while LLMs not really
+
+
+
+**Can we speed up software by translating it to Rust?**
+
+Don't assume this; it is faster if you use the final software as a library, but don't expect a faster CLI replacement. Rust is faster than R, python etc, but it can be hard to beat well-written C++ code.
+But you can get a ton of speed improvement if your tool reads a database and then applies it to input data. If you call the crate as a library (not CLI!), and apply it to a lot of input data, you
+can reduce the initial loading cost by a ton.
+
+**Can you help me translate X?**
+
+You can put it as a request in this thread and I will see what I have time for. **If you are an author of a commonly used tool and want to move to Rust, I am happy to help!**
+
+
+## Floating point is difficult
+
+One challenge in translating code to Rust is that floating point (decimal) math is really hard to translate well. **If you care about p-values, this is important.**
+
+Everyone learn in school that (ab)c = a(bc), but this is not true in computers for floating point. Orders matter. This even worse for addition of decimal numbers.
+"YOLO" is a very bad approach for translating any code that deals with numbers as once you are off, you will have to search the whole code base for the reordering error.
+This is hard for a human, and it is hard for an LLM. Verbatim translation for day 1 is the only serious solution (and use tracehash when you undoubtedly will still fail).
+
+This has implications for SIMD, which can really help speed up computations. Instead of (((ab)c)d), a CPU can e.g. compute (abcd) in one swoop. But now the order was changed!
+There are thus potential tradeoffs to be made when enabling SIMD vs faithful reproduction of the original. **SIMD is typically offered as an optional crate feature because of this.**
+If you enable this feature, beware that you might get somewhat different results.
+
+**Bioinformaticians, please don't use p-value cutoffs if you can!!!** If you include genes at p=0.05, then a gene that got 0.051 once, and then 0.049 after SIMD,
+this is a huge difference for the results (exaggerated, differences are smaller, but you get the point). If you run multiple steps with cutoffs everywhere, it is better if you
+can instead weigh by p-value. This is much more robust to numeric differences. i.e., if you want to compute P(x and y), then do this as P(x)P(y).
+This is better than *if P(x<0.05) then check P(y)* -- both more a numerical and statistical standpoint. The future will love you.
+
+
+## User interfaces are hard to translate
+
+
+TODO
+
+(Iced is our default)
+
+
+
+
+
+
+
+
 
 

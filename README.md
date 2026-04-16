@@ -99,17 +99,15 @@ This is better than *if P(x<0.05) then check P(y)* -- both more a numerical and 
 
 ## User interfaces are hard to translate
 
+There are many libraries for graphical user interfaces, some only working on certain operating systems. Faithful reproduction of GUIs is usually not a good idea. Ideally a modern
+design should also cater to different monitor sizes, and enable adaptive font sizes to aid those with poor eye sight, or needing special readers for aid. We translate GUIs
+very losely and more work can be done in this domain.
 
-TODO
+Testing GUIs is also hard. LLMs only work well if they are allowed to write A LOT of tests, and we also lack the equivalent of a "byte per byte" comparison. GUIs are not fun
+to translate.
 
-(Iced is our default)
-
-
-
-
-
-
-
+Pragmatically, we have picked the Rust Iced library as the default. It results in the least code but is not perfect. Default translations don't look good. Instead,
+the best trick so far is to include screenshots of the original and let the LLM do some adjustments. Input of GUI translation is most welcome!
 
 
 

@@ -47,14 +47,14 @@ But in short, we use Claude and Codex along with software that helps validate th
 
 We are designing software to aid faithful and efficient translation. You can point your LLM to them and it will figure out how to use them
 * [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Hash based to be fast; mainly used for quick testing
-* [deep-code-comparator](https://github.com/henriksson-lab/deep-code-comparator): Designed to obtain realistic test data for isolated functions, and enable one-shot translation of code from the bottom and up
+* [deep-code-comparator](https://github.com/henriksson-lab/deep-code-comparator): Designed to obtain realistic test data for isolated functions, and enable one-shot translation of code from the bottom and up; but it is also useful for rapid optimization of key functions
 * [code-complexity-comparator](https://github.com/henriksson-lab/code-complexity-comparator): Pinpoints unfaithful translation in code by comparing complexity and content of functions, using static analysis.
 
 
 ## FAQ?
 
 
-**Why not just write new software instead of translating?**
+### Why not just write new software instead of translating?
 
 1. We could just ask our LLM to write the software we need but it would then just go out and copy it from somewhere, without us knowing the origin. This means unclear copyright, and nobody gets attributed for their contribution
 2. Maintaining a competing software is more work, adds code to maintain, and steals citations. It's a lose-lose scenario

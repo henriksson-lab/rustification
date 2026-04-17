@@ -44,8 +44,11 @@ This blurb might be out of date. Go to [this page](https://github.com/henriksson
 We will release information about our process once we think it produces good output. Other people may otherwise blindly follow the instructions and fill the internet with poor translations.
 But in short, we use Claude and Codex along with software that helps validate the quality.
 
-One particularly useful software is our [tracehash](https://github.com/henriksson-lab/tracehash), which helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility.
-You can point your LLM to it and it will figure out how to use it
+
+We are designing software to aid faithful and efficient translation. You can point your LLM to them and it will figure out how to use them
+* [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Hash based to be fast; mainly used for quick testing
+* [deep-code-comparator](https://github.com/henriksson-lab/deep-code-comparator): Designed to obtain realistic test data for isolated functions, and enable one-shot translation of code from the bottom and up
+* [code-complexity-comparator](https://github.com/henriksson-lab/code-complexity-comparator): Pinpoints unfaithful translation in code by comparing complexity and content of functions, using static analysis.
 
 
 ## FAQ?

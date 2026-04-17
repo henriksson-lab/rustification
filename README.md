@@ -39,7 +39,7 @@ This blurb might be out of date. Go to [this page](https://github.com/henriksson
 
 
 
-## How we translate
+## How we translate / tools
 
 We will release information about our process once we think it produces good output. Other people may otherwise blindly follow the instructions and fill the internet with poor translations.
 But in short, we use Claude and Codex along with software that helps validate the quality.
@@ -60,7 +60,7 @@ We are designing software to aid faithful and efficient translation. You can poi
 2. Maintaining a competing software is more work, adds code to maintain, and steals citations. It's a lose-lose scenario
 3. Written software has been tested, and LLMs tend to produce rather shoddy software. It still cannot compete with hand-crafted code from an engineer. By translating, we can compare our software to a reference to ensure correctness
 
-**Why use LLMs to translate?**
+### Why use LLMs to translate?
 
 Software like [c2rust](https://github.com/immunant/c2rust) can convert C to Rust 100% faithfully, but at a serious cost: It doesn't look like Rust at all! This causes several problems:
 1. Heavy use of "unsafe" means that the memory safety guarantees of Rust are disabled
@@ -69,15 +69,13 @@ Software like [c2rust](https://github.com/immunant/c2rust) can convert C to Rust
 
 That said, we are looking into ways of reducing LLM usage, as an algorithm can be proven to generate faithful results, while LLMs not really
 
+### Can we speed up software by translating it to Rust?
 
-
-**Can we speed up software by translating it to Rust?**
-
-Don't assume this; it is faster if you use the final software as a library, but don't expect a faster CLI replacement. Rust is faster than R, python etc, but it can be hard to beat well-written C++ code.
+Don't assume this; it can be much faster if you use the final software as a library, but don't expect a basic CLI replacement to be faster. While Rust is faster than R, python etc, it can be hard to beat well-written C++ code that already includes SIMD or assembly code.
 But you can get a ton of speed improvement if your tool reads a database and then applies it to input data. If you call the crate as a library (not CLI!), and apply it to a lot of input data, you
 can reduce the initial loading cost by a ton.
 
-**Can you help me translate X?**
+### Can you help me translate X?**
 
 You can put it as a request in this thread and I will see what I have time for. **If you are an author of a commonly used tool and want to move to Rust, I am happy to help!**
 

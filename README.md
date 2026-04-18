@@ -54,7 +54,11 @@ We are designing software to aid faithful and efficient translation. You can poi
 Translation is hard. Below are three screenshots from the CCC, which has a TUI to compare the before-after translation. This is the HDF5 source code, which is in C.
 Unlike newer languages, C does not enforce any structure, and C projects have frequently came up with "their own ways" of organizing code. But for an outsider,
 it can look really esoteric. CCC attempts to color code variables the same left vs right to aid comparison. It works well for the first function, but not so well
-for the second function. For this project, translating functions 1-1 in a good way is near impossible
+for the second function. For this project, translating functions 1-1 in a good way is near impossible.
+
+At the bottom of this viewer you also see metrics on code complexity. If they deviate, it suggests that logic or optimizations have gone missing.
+This has caught many bugs, especially related to optimization where LLM frequently ends up trying to optimize "the hot loop" rather than why it ended up there in the first
+place. Unfortunately this approach relies on translations being 1-1, and one should try to enforce this from the first line of translation.
 
 ![ccc_ok](img/ccc_hdf5_nbit.png)
 

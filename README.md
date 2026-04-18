@@ -48,7 +48,17 @@ But in short, we use Claude and Codex along with software that helps validate th
 We are designing software to aid faithful and efficient translation. You can point your LLM to them and it will figure out how to use them
 * [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Hash based to be fast; mainly used for quick testing
 * [deep-code-comparator](https://github.com/henriksson-lab/deep-code-comparator): Designed to obtain realistic test data for isolated functions, and enable one-shot translation of code from the bottom and up; but it is also useful for rapid optimization of key functions
-* [code-complexity-comparator](https://github.com/henriksson-lab/code-complexity-comparator): Pinpoints unfaithful translation in code by comparing complexity and content of functions, using static analysis.
+* [CCC/code-complexity-comparator](https://github.com/henriksson-lab/code-complexity-comparator): Pinpoints unfaithful translation in code by comparing complexity and content of functions, using static analysis.
+* [gdb-translation-verifier-rs](https://github.com/henriksson-lab/gdb-translation-verifier-rs): Run two GDBs (debuggers), step through the code, and halt when the code paths deviate. Theoretically the gold standard internal comparison, and avoids instrumentation
+
+Translation is hard. Below are three screenshots from the CCC, which has a TUI to compare the before-after translation. This is the HDF5 source code, which is in C.
+Unlike newer languages, C does not enforce any structure, and C projects have frequently came up with "their own ways" of organizing code. But for an outsider,
+it can look really esoteric. CCC attempts to color code variables the same left vs right to aid comparison. It works well for the first function, but not so well
+for the second function. For this project, translating functions 1-1 in a good way is near impossible
+
+![ccc_ok](img/ccc_hdf5_nbit.png)
+
+![ccc_lessok](img/ccc_hdf5_decode.png)
 
 
 ## FAQ?

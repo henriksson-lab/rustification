@@ -35,8 +35,17 @@ This blurb might be out of date. Go to [this page](https://github.com/henriksson
 
 
 
+## Naming and versioning advice
 
+To avoid confusion with the original software, but aid users to find the translation, we aim to put "-rs" to the original name.
+Sometimes such crates already exist on Crate.io, in which other versions such as -pure-rs or -compliant-rs are added. Compliant
+here refers to our practice of trying to retain the original behavior.
 
+Rust takes semantic versioning VERY seriously. But anything 0.x.y is treated as "good luck", aimed for early development. Because
+we add high-level APIs (affects x.y.0), unintentionally add additional bugs (affects 0.0.z), but also have the original software version
+(x.y.z) which need not follow semantic versioning, we just can't commit to Rust versioning. We will thus use 0.y.z for all translations.
+If ever the original author (or appointed person) wish to take over the translation and make it the primary implementation, this would
+be the time to bump the major Rust crate version.
 
 
 ## How we translate / tools

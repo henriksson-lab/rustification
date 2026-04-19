@@ -44,10 +44,8 @@ This blurb might be out of date. Go to [this page](https://github.com/henriksson
 We will release information about our process once we think it produces good output. Other people may otherwise blindly follow the instructions and fill the internet with poor translations.
 But in short, we use Claude and Codex along with software that helps validate the quality.
 
-
 We are designing software to aid faithful and efficient translation. You can point your LLM to them and it will figure out how to use them
-* [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Hash based to be fast; mainly used for quick testing
-* [deep-code-comparator](https://github.com/henriksson-lab/deep-code-comparator): Designed to obtain realistic test data for isolated functions, and enable one-shot translation of code from the bottom and up; but it is also useful for rapid optimization of key functions
+* [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Supports light hash-based comparison for a first pass, and heavy full I/O recording to figure out what is going wrong
 * [CCC/code-complexity-comparator](https://github.com/henriksson-lab/code-complexity-comparator): Pinpoints unfaithful translation in code by comparing complexity and content of functions, using static analysis.
 * [gdb-translation-verifier-rs](https://github.com/henriksson-lab/gdb-translation-verifier-rs): Run two GDBs (debuggers), step through the code, and halt when the code paths deviate. Theoretically the gold standard internal comparison, and avoids instrumentation
 
@@ -63,6 +61,75 @@ place. Unfortunately this approach relies on translations being 1-1, and one sho
 ![ccc_ok](img/ccc_hdf5_nbit.png)
 
 ![ccc_lessok](img/ccc_hdf5_decode.png)
+
+
+## Translation advice
+
+If you want to try out translation, here are some things to consider:
+
+### Be ethical
+
+We will likely disagree on how to do translations but to minimize damage, at least think through the implications before you put up code on the internet. Read [this manifesto](https://rewrites.bio/),
+which has at least some basic decent guidelines. There are legal matters to understand (at minimum), but long-term, the biggest concerns will be in how the code should be maintained.
+
+### Pick your battles
+
+* C code can be really hard to translate and it is commonly quite fast already. This is not the best place for a beginner to start
+* If you don't know Rust, be sure to have someone senior around who can QC your final result before cargo publishing! (cannot be undone)
+
+
+### LLMs are trying to please you - Incomplete buggy and slow products
+
+**Claude will aim to deliver a minimum viable product as soon as possible.** Likely because it is easier to test working code, and LLMs heavily depend on testing.
+But the downside is that it will skip 90% of the features. It will ignore corner cases and introduce bugs.
+It will replace advanced fast algorithms with brute force algorithms. All of this will come to explode in your face later!
+
+Worst of all, when you later try to fix the code (speed, output equality), the LLM will start to introduce heuristics that only work on your
+small test data. **Claude is especially good at "innovating" in heuristics.**
+
+To overcome these problems as much as possible:
+1. Obtain real-life data for testing on ASAP
+2. Ask the LLM to do faithful (bitwise equality of outputs) translation, covering all features, from the beginning
+3. Keep reminding the LLM of this goal (for Claude, every 1h, or more frequently if the code is hard to fix)
+4. **Ask the LLM to produce one Rust function for each input function**. This is not always possible, but it makes it so much easier to check correctness later
+5. Translate bottom up. Use our CCC to figure out the best order to translate, using static analysis. Tell the LLM to keep the ccc_mapping.toml file up to date. In the current workflow we produce stubs for each function to translate, from day 1, before filling functions with code. This appears to limit any LLM creativity
+6. Instrument the code to check intermediate values, not just the final output. Our Tracehash crate is for this purpose
+7. Do some manual inspection. Our CCC has a TUI for this
+
+
+### LLMs are trying to please you - Poor benchmarking and optimization
+
+**Claude is notoriously bad at performing speed comparisons vs the original code**, because it will use every means of finding 
+ways of making translation look better. **It can be hard to even convince Claude to be fair.** 
+For example, it will compare 8-thread Rust code vs 1-thread C. It will not enable C compiler optimization. It will focus on trivial examples where starting costs
+dominate. It will disable SIMD. It will focus optimization on irrelevant parts of code. **Don't use Claude for this purpose if you can avoid it.**
+
+
+### Rayon multithreading might not get done right
+
+If the LLM gets freedom to add multithreading, it might not do it at the right level, causing major speed problems. Exposed if
+compared to the original code. Be vigilant if original code lack multithreading.
+
+Also remember that your final tool might run as part of a bigger tool. The caller should be able to control if the multithreading should be hoisted or not. Make
+it possible to share the Threadpool.
+
+### The final translation needs manual love
+
+The API generated by LLM is not pretty and it might not fulfill your needs. You especially need to ensure that data can be fed directly
+and not just via CLI. If the tool loads a database, ensure that the user need only do this once.
+
+Check naming of exposed functions. "Pipeline" is not a good name (as there might be many). Instead of myfunction(x), x.myfunction() is cleaner to export.
+
+If there is a low level API already, then best to add a new high level API on top. It's a strict addition to the translated code (does not mess up verifiability),
+and the top layer has little impact on performance anyway.
+
+Investigate if you can support better integration with existing Rust ecosystem. E.g., it might be better to use Noodles for parsing FASTA. This is
+in conflict with keeping the code to the original source, and adds dependencies. Good judgement needed.
+
+### Length of context drives cost
+
+To reduce cost, we are investigating how to limit context size (e.g. using agents in Claude) without loss of precision. Input is welcome
+
 
 
 ## FAQ?

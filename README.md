@@ -51,7 +51,11 @@ be the time to bump the major Rust crate version.
 ## How we translate / tools
 
 We will release information about our process once we think it produces good output. Other people may otherwise blindly follow the instructions and fill the internet with poor translations.
-But in short, we use Claude and Codex along with software that helps validate the quality.
+But in short, we use Claude and Codex along with static analysis software that helps validate the quality. Most important conclusions so far are:
+* Static analysis is essential for quality translation
+* Claude is borderline unsuitable for translation work as it frequently refuses to follow instructions and produces biased benchmarks. Cleaning up work from Claude can offset its contribution
+* Functions should be translated as near to 1-1 as possible to ensure efficient audit; aim to oneshot the full logic right away to avoid time consuming backtracking
+* Performance deviation (up or down) vs original software should be treated as a regression until otherwise proven
 
 We are designing software to aid faithful and efficient translation. You can point your LLM to them and it will figure out how to use them
 * [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Supports light hash-based comparison for a first pass, and heavy full I/O recording to figure out what is going wrong
@@ -85,6 +89,7 @@ which has at least some basic decent guidelines. There are legal matters to unde
 
 * C code can be really hard to translate and it is commonly quite fast already. This is not the best place for a beginner to start
 * If you don't know Rust, be sure to have someone senior around who can QC your final result before cargo publishing! (cannot be undone)
+* Plan for future maintenance from the start. Avoid translating code bases that are undergoing rapid updates unless you are seriously committed to updating the translation. Check when the last commit was made to the repo to gauge this
 
 
 ### LLMs are trying to please you - Incomplete buggy and slow products

@@ -56,6 +56,8 @@ But in short, we use Claude and Codex along with static analysis software that h
 * Claude is borderline unsuitable for translation work as it frequently refuses to follow instructions and produces biased benchmarks. Cleaning up work from Claude can offset its contribution
 * Functions should be translated as near to 1-1 as possible to ensure efficient audit; aim to oneshot the full logic right away to avoid time consuming backtracking
 * Performance deviation (up or down) vs original software should be treated as a regression until otherwise proven
+* Always translate bottom up
+
 
 We are designing software to aid faithful and efficient translation. You can point your LLM to them and it will figure out how to use them
 * [tracehash](https://github.com/henriksson-lab/tracehash): Helps instrument original + translated code for efficient bug tracking and bit-wise reproducibility. Supports light hash-based comparison for a first pass, and heavy full I/O recording to figure out what is going wrong

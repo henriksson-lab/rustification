@@ -1,7 +1,8 @@
 
 ## Why are we translating code to Rust?
 
-Link to blog to follow
+You can [read more about it on our blog](https://www.henlab.org/blog/posts/2026-07-04-rust-translation.html).
+
 
 ## Below is a blurb that we should add to all our crates; it is the latest version
 ## ⚠ This is an LLM-mediated faithful (hopefully) translation, not the original code!
@@ -260,6 +261,8 @@ at a serious cost: it doesn't look like Rust at all! This causes several problem
 
 That said, we are looking into ways of reducing LLM usage, as an algorithm can be proven to generate
 faithful results, while LLMs not really
+
+Here's a preview of upcoming work: [java2rust](https://github.com/henriksson-lab/java2rust).
 
 ### Can we speed up software by translating it to Rust?
 

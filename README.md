@@ -3,6 +3,8 @@
 
 You can [read more about it on our blog](https://www.henlab.org/blog/posts/2026-07-04-rust-translation.html).
 
+Here is also a preprint on [how the translation was done, including instructions for further translations](https://www.henlab.org/blog/posts/2026-07-16-rust-preprint.html)
+
 
 ## Below is a blurb that we should add to all our crates; it is the latest version
 ## ⚠ This is an LLM-mediated faithful (hopefully) translation, not the original code!

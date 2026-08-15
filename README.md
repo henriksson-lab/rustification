@@ -3,7 +3,9 @@
 
 You can [read more about it on our blog](https://www.henlab.org/blog/posts/2026-07-04-rust-translation.html).
 
-Here is also a preprint on [how the translation was done, including instructions for further translations](https://www.henlab.org/blog/posts/2026-07-16-rust-preprint.html)
+Here is also a preprint on how the translation was done, including instructions for further translations:
+
+> Johan Henriksson. Static analysis-guided agentic AI translation enables Rust as a full stack bioinformatics language. arXiv:2608.13029, 2026. https://doi.org/10.48550/arXiv.2608.13029
 
 
 ## Below is a blurb that we should add to all our crates; it is the latest version
